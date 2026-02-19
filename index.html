@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quero Burguer - O Melhor Hambúrguer da Cidade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="theme-color" content="#121212">
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header id="header">
+        <div class="container header-content">
+            <div class="brand">
+                <h1>QUERO <span>BURGUER</span></h1>
+            </div>
+            <nav>
+                <button id="cart-btn" class="cart-btn" onclick="toggleCart()">
+                    🛒 <span id="cart-count">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- BANNER -->
+    <section class="banner">
+        <div class="banner-overlay"></div>
+        <div class="container banner-text">
+            <h2>Bateu aquela fome?</h2>
+            <p>Pede na Quero Burguer 🍔🔥</p>
+            <a href="#cardapio" class="cta-button">VER CARDÁPIO AGORA</a>
+        </div>
+    </section>
+
+    <!-- CARDÁPIO -->
+    <main id="cardapio" class="container">
+
+        <!-- CATEGORIAS -->
+        <div class="category-section">
+            <h3>🍔 Hambúrgueres</h3>
+            <div class="product-grid" id="burgers-grid">
+                <!-- Inserido via JS -->
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h3>🍟 Combos</h3>
+            <div class="product-grid" id="combos-grid"></div>
+        </div>
+
+        <div class="category-section">
+            <h3>🥓 Acompanhamentos</h3>
+            <div class="product-grid" id="sides-grid"></div>
+        </div>
+
+        <div class="category-section">
+            <h3>🥤 Bebidas</h3>
+            <div class="product-grid" id="drinks-grid"></div>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE PRODUTO (PERSONALIZAÇÃO) -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content product-modal-content">
+            <div class="modal-header">
+                <h3 id="modal-product-name">Nome do Produto</h3>
+                <span class="close-btn" onclick="closeProductModal()">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <img id="modal-product-img" src="" alt="Produto" class="modal-img">
+                <p id="modal-product-desc">Descrição do produto...</p>
+                <p class="modal-price">R$ <span id="modal-product-price">0,00</span></p>
+
+                <!-- ADICIONAIS -->
+                <div class="extras-section">
+                    <h4>Adicionais (Opcional):</h4>
+                    <div id="modal-extras">
+                        <!-- Checkboxes inseridos via JS -->
+                    </div>
+                </div>
+
+                <!-- OBSERVAÇÕES -->
+                <div class="form-group">
+                    <label>Observações:</label>
+                    <textarea id="modal-observation" placeholder="Ex: Tirar cebola, ponto da carne..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="quantity-control">
+                    <button onclick="changeModalQty(-1)">-</button>
+                    <span id="modal-qty">1</span>
+                    <button onclick="changeModalQty(1)">+</button>
+                </div>
+                <button class="btn-finalize" onclick="addToCartFromModal()">ADICIONAR R$ <span
+                        id="modal-btn-price">0,00</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DO CARRINHO -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Seu Pedido</h3>
+                <span class="close-btn" onclick="toggleCart()">&times;</span>
+            </div>
+
+            <div id="cart-items" class="cart-items">
+                <!-- Itens do carrinho -->
+                <p class="empty-msg">Seu carrinho está vazio.</p>
+            </div>
+
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">R$ 0,00</span>
+            </div>
+
+            <!-- FORMULÁRIO DE CHECKOUT -->
+            <div class="checkout-form">
+                <h4>Finalizar Pedido</h4>
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="client-name" placeholder="Digite seu nome">
+                </div>
+                <div class="form-group">
+                    <label>Telefone (WhatsApp)</label>
+                    <input type="tel" id="client-phone" placeholder="(21) 9xxxx-xxxx">
+                </div>
+                <div class="form-group">
+                    <label>Endereço de Entrega</label>
+                    <textarea id="client-address" placeholder="Rua, Número, Bairro, Complemento"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Forma de Pagamento</label>
+                    <select id="payment-method">
+                        <option value="Pix">Pix (Chave enviada no Whats)</option>
+                        <option value="Dinheiro">Dinheiro (Precisa de troco?)</option>
+                        <option value="Cartão">Cartão (Maquininha na entrega)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="change-group" style="display:none">
+                    <label>Troco para quanto?</label>
+                    <input type="text" id="change-for" placeholder="R$ 50,00">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-finalize" onclick="finalizeOrder()">✅ FINALIZAR NO WHATSAPP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÃO FLUTUANTE WHATSAPP -->
+    <a href="https://wa.me/5521992497289" class="whatsapp-float" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </a>
+
+    <footer>
+        <p>&copy; 2026 Quero Burguer. Todos os direitos reservados.</p>
+        <p>Desenvolvido por <strong>Antigravity</strong></p>
+    </footer>
+
+    <!-- AREA DE IMPRESSAO (OCULTA) -->
+    <div id="printable-area" class="printable"></div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
